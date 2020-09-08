@@ -125,6 +125,11 @@ public class Polynom {
         return this.times(1./k);
     }
 
+    /**
+     * Метод вычисления значения полинома в точке
+     * @param x точка, в которой нужно посчитать значение полинома
+     * @return значение полинома при заданном x
+     */
     public double invoke(double x){
         double p = 0;
         double mon = 1;
@@ -135,68 +140,47 @@ public class Polynom {
         return p;
     }
 
+    /**
+     * Получение строкового представления полинома
+     * @return строка, содержащая запись полинома в стандартном виде
+     */
     @Override
     public String toString(){
         StringBuilder res = new StringBuilder();
-        for (int i = coef.length-1; i>=0; i--){
-
-
-//            res.append('(');
-//            res.append(coef[i]);
-//            res.append(')');
-//            res.append("x^");
-//            res.append(i);
-//            if (i > 0) res.append(" + ");
-
-
-
-            if (coef[i] == 0){
-                res.append('0');
-                if (i > 0) res.append(" + ");
-            } else if (coef[i] == 1){
-                //->
-                if (i == 0) {
-                    res.append('1');
-                } else if (i == 1) {
-                    res.append("x");
-                } else {
-                    res.append("x^");
-                    res.append(i);
-                }
-                //<-
-                if (i > 0) res.append(" + ");
-            } else if (coef[i] < 0){
-                res.append('(');
-                res.append(coef[i]);
-                res.append(')');
-                //->
-                if (i == 0) {
-                } else if (i == 1) {
-                    res.append("x");
-                } else {
-                    res.append("x^");
-                    res.append(i);
-                }
-                //<-
-                if (i > 0) res.append(" + ");
-            } else {
-                res.append(coef[i]);
-                //->
-                if (i == 0) {
-                } else if (i == 1) {
-                    res.append("x");
-                } else {
-                    res.append("x^");
-                    res.append(i);
-                }
-                //<-
-                if (i > 0) res.append(" + ");
+        //Для всех коэффициентов в порядке убывания степеней
+        for (int i = coef.length-1; i>=0; i--) {
+            //Если коэффициент равен 0...
+            //(только не в случае, если это единственный коэффициент)
+            if (Math.abs(coef[i]) < ZERO && (i!=0 || coef.length!=1)) continue;
+            double c = coef[i];
+            if (c < 0) {
+                //Для отрицательных значений коэффициентов выводим "-" и далее
+                //работаем с модулем коэффициента
+                res.append("-");
+                c = Math.abs(c);
+            } else
+                //для положительных коэффициентов выводим "+", если
+                //это не первый коэффициент
+                if (i < coef.length - 1)
+                    res.append("+");
+            //Проверяем, что коэффициент не равен +1 или -1
+            //кроме случая, если этот коэффициент при 0й степени
+            if (Math.abs(c-1) > ZERO || i == 0)
+                //Выводим сам коэффициент или (если он целый)
+                if (Math.abs(c-(long)c)<ZERO)
+                    //приводим коэффициент к длинному целому числу
+                    res.append((long)c);
+                else
+                    res.append(c);
+            //Если степень 1 или больше, выводим символ "x"
+            if (i >= 1) res.append('x');
+            //Если степень строго больше 1, выводим ее значение
+            if (i > 1) {
+                res.append('^');
+                res.append(i);
             }
-
-
-
-
         }
+        //Преобразуем полученную запись в строку
         return res.toString();
     }
 
