@@ -23,4 +23,7 @@ fun main(){
             1.0 to 1.0
     ))
     println(l1)
+
+    val w = MainWindow()
+    w.isVisible = true
 }
