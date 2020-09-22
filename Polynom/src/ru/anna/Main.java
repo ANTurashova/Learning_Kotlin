@@ -5,7 +5,7 @@ import ru.anna.polynoms.Polynom;
 public class Main {
     public static void main(String[] args) {
         double[] c1 = {1, 2, 3};
-        double[] c2 = {-1, -2, -2};
+        double[] c2 = {-1, -2, -4};
         Polynom p1 = new Polynom(c1);
         Polynom p2 = new Polynom(c2);
         Polynom p3 = p1.plus(p2);
