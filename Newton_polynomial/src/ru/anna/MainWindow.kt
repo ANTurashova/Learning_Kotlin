@@ -27,25 +27,24 @@ class MainWindow : JFrame(){
         val gl = GroupLayout(contentPane)  // менеджер раскладок // contentPane - часть окна без заголовка
 
         gl.setVerticalGroup(gl.createSequentialGroup()  // вертикаль
-                .addGap(4)  // зазорчик
-                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
-                .addGap(4)
-                .addComponent(controlPanel, 100, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
-                .addGap(4)
+            .addGap(4)  // зазорчик
+            .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
+            .addGap(4)
+            .addComponent(controlPanel, 100, GroupLayout.PREFERRED_SIZE, GroupLayout.PREFERRED_SIZE)
+            .addGap(4)
         )
 
         gl.setHorizontalGroup(gl.createSequentialGroup()  // горизонталь
-                .addGap(4)
-                .addGroup(  // для параллельных компонентов
-                        gl.createParallelGroup()
-                                .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
-                                .addComponent(controlPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
-                )
-                .addGap(4)
+            .addGap(4)
+            .addGroup(  // для параллельных компонентов
+                gl.createParallelGroup()
+                    .addComponent(mainPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
+                    .addComponent(controlPanel, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE, GroupLayout.DEFAULT_SIZE)
+            )
+            .addGap(4)
         )
 
         layout = gl  // размеры компонентов будут такие, какие описали
 //        add(mainPanel)  // добавление панели  // не надо, если уже описали .setVerticalGroup
-        pack()
     }
 }
