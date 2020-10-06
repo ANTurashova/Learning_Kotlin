@@ -1,7 +1,7 @@
 package ru.anna
 
-import ru.anna.polynoms.Lagrange
-import ru.anna.polynoms.Polynom
+import ru.anna.Lagrange
+import ru.anna.Polynom
 
 fun main(){
     val p1 = Polynom(doubleArrayOf(1.0, 0.0, 3.0, 0.0, 0.0))

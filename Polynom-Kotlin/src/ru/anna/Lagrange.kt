@@ -1,4 +1,4 @@
-package ru.anna.polynoms
+package ru.anna
 
 class Lagrange(xfx: MutableMap<Double, Double>) : Polynom(){
 

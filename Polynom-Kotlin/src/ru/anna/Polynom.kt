@@ -1,4 +1,4 @@
-package ru.anna.polynoms
+package ru.anna
 
 import kotlin.math.abs
 import kotlin.math.max
@@ -19,13 +19,13 @@ open class Polynom(coef: DoubleArray) {
     /**
      * Степень полинома
      */
-    val power : Int
+    val power: Int
         get() = coef.size - 1
 
     /**
      * Тело первичного конструктора
      */
-    init{
+    init {
         correctPower()
     }
 
@@ -86,13 +86,13 @@ open class Polynom(coef: DoubleArray) {
      * @param other полином, на который производится умножение
      * @return произведение двух полиномов
      */
-    operator fun times(other: Polynom): Polynom{
+    operator fun times(other: Polynom): Polynom {
         //Создание массива коэффициентов нового полинома
-        val t = DoubleArray(power + other.power + 1){ 0.0 }
+        val t = DoubleArray(power + other.power + 1) { 0.0 }
         //Для каждого коэффициента первого полинома и
         coef.forEachIndexed { ti, tc ->
             //коэффициента второго полинома
-            other.coef.forEachIndexed{ oi, oc ->
+            other.coef.forEachIndexed { oi, oc ->
                 t[ti + oi] += tc * oc
             }
         }
@@ -105,9 +105,9 @@ open class Polynom(coef: DoubleArray) {
      * @param k число, на которое требуется подилить полином
      * @return частное от деления полинома на число
      */
-    operator fun div(k: Double) : Polynom? =
-            if (k.compareTo(0.0)!=0)
-                this*(1.0/k)
+    operator fun div(k: Double): Polynom? =
+            if (k.compareTo(0.0) != 0)
+                this * (1.0 / k)
             else
                 null
 
@@ -120,8 +120,9 @@ open class Polynom(coef: DoubleArray) {
         val res = StringBuilder()
         //Степень полинома
         val pow = power
+
         //Вложенная функция, проверяющая, является ли число целым
-        fun isLong(x: Double) = abs(x-x.toLong()).compareTo(0.0) == 0
+        fun isLong(x: Double) = abs(x - x.toLong()).compareTo(0.0) == 0
         //Для каждого коэффициента в массиве...
         coef.reversed().forEachIndexed { ind, v ->
             //находим степень
@@ -157,11 +158,10 @@ open class Polynom(coef: DoubleArray) {
      * @param x точка, в которой нужно вычислить значение полинома
      * @return значение полинома в точке
      */
-    operator fun invoke(x: Double): Double{
+    operator fun invoke(x: Double): Double {
         var pow = 1.0
         return coef.reduce { acc, d ->
             pow *= x; acc + d * pow
         }
     }
-
 }
