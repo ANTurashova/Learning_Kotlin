@@ -1,8 +1,8 @@
 package ru.anna.gui
 
-import ru.anna.gui.components.ControlPanel  // Контрол панель
-import ru.anna.gui.components.GraphicsPanel  // Граф панель
-import ru.anna.gui.graphics.CartesianPanter  // Декартова
+import ru.anna.gui.components.GraphicsPanel
+import ru.anna.gui.graphics.CartesianPanter
+import ru.anna.gui.components.ControlPanel
 import java.awt.Color
 import java.awt.Dimension
 import javax.swing.GroupLayout
@@ -12,15 +12,17 @@ import javax.swing.JPanel
 class MainWindow : JFrame(){
 
     private val minSize = Dimension(550, 400)
-    private val mainPanel: GraphicsPanel  // Граф панель
-    private val controlPanel: ControlPanel  // Контрол панель
+///    private val mainPanel: JPanel  Сделаем основную панель типа GraphicsPanel
+    private val mainPanel: GraphicsPanel
+    private val controlPanel: ControlPanel
     init{
         defaultCloseOperation = EXIT_ON_CLOSE
         minimumSize = Dimension(minSize.width+200, minSize.height+400)
-        val dp = CartesianPanter()  // Декартова
-        mainPanel = GraphicsPanel(dp)  // Граф панель
+        val dp = CartesianPanter()  // Создадим объект класса CartesianPanter
+///        mainPanel = JPanel()  Сделаем основную панель типа GraphicsPanel
+        mainPanel = GraphicsPanel(dp)  // когда мы создаём графикс панель, мы должны указать объект класса Painter
         mainPanel.background = Color.WHITE
-        controlPanel = ControlPanel()  // Контрол панель
+        controlPanel = ControlPanel()
         val gl = GroupLayout(contentPane)
 
         gl.setVerticalGroup(gl.createSequentialGroup()
