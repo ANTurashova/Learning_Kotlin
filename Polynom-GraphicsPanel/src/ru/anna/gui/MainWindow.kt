@@ -13,12 +13,12 @@ import javax.swing.JFrame
 
 class MainWindow : JFrame(){
 
-    private val minSize = Dimension(500, 300)
+    private val minSize = Dimension(450, 400)
     private val mainPanel: GraphicsPanel
     private val controlPanel: ControlPanel
     init{
         defaultCloseOperation = EXIT_ON_CLOSE
-        minimumSize = Dimension(minSize.width+200, minSize.height+400)
+        minimumSize = Dimension(minSize.width+180, minSize.height+315)
         mainPanel = GraphicsPanel()  /// устар: когда мы создаём графикс панель, мы должны указать объект класса Painter
         mainPanel.background = Color.WHITE
         controlPanel = ControlPanel()
