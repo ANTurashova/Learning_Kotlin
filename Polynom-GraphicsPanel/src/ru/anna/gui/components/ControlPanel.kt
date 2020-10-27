@@ -16,15 +16,17 @@ class ControlPanel : JPanel(){
     private val sYMin: JSpinner  // скролл
     private val sYMax: JSpinner  // скролл
 
-    private val smXMin: SpinnerNumberModel  // скролл
-    private val smXMax: SpinnerNumberModel  // скролл
-    private val smYMin: SpinnerNumberModel  // скролл
-    private val smYMax: SpinnerNumberModel  // скролл
+    val smXMin: SpinnerNumberModel  // скролл
+    val smXMax: SpinnerNumberModel  // скролл
+    val smYMin: SpinnerNumberModel  // скролл
+    val smYMax: SpinnerNumberModel  // скролл
 
     companion object{
         private val MIN_SZ = GroupLayout.PREFERRED_SIZE
         private val MAX_SZ = GroupLayout.DEFAULT_SIZE
     }
+
+    private val valChangeListeners = mutableListOf<()->Unit>()  // Создаём пустой список и добавим ему пару методов
 
     init{
         border = EtchedBorder()
@@ -45,10 +47,22 @@ class ControlPanel : JPanel(){
         smYMax = SpinnerNumberModel(5.0, -4.9, 100.0, 0.1)  // скролл
 
         // По сколько прибавлять при вращении
-        smXMin.addChangeListener{ smXMax.minimum = smXMin.number.toDouble() + 0.1}  // скролл
-        smXMax.addChangeListener{ smXMin.maximum = smXMax.number.toDouble() - 0.1}  // скролл
-        smYMin.addChangeListener{ smXMax.minimum = smYMin.number.toDouble() + 0.1}  // скролл
-        smYMax.addChangeListener{ smXMax.minimum = smYMax.number.toDouble() - 0.1}  // скролл
+        smXMin.addChangeListener{
+            smXMax.minimum = smXMin.number.toDouble() + 0.1  // скролл
+            valChangeListeners.forEach { it() }  // вызываем для списка (берем список листнеров (т е функций сохранённых в списки обработчиков событий изменений спинеров) , пробегаемся по всему списку и для каждого элемента списка выполняем его вызов)
+        }
+        smXMax.addChangeListener{
+            smXMin.maximum = smXMax.number.toDouble() - 0.1  // скролл
+            valChangeListeners.forEach { it() }
+        }
+        smYMin.addChangeListener{
+            smXMax.minimum = smYMin.number.toDouble() + 0.1  // скролл
+            valChangeListeners.forEach { it() }
+        }
+        smYMax.addChangeListener{
+            smXMax.minimum = smYMax.number.toDouble() - 0.1  // скролл
+            valChangeListeners.forEach { it() }
+        }
 
         sXMin = JSpinner(smXMin)  // скролл
         sXMax = JSpinner(smXMax)  // скролл
@@ -105,5 +119,13 @@ class ControlPanel : JPanel(){
                         .addGap(4)
         )
         layout = gl
+    }
+
+    fun addValChangeListener(l: ()->Unit){  // для списка
+        valChangeListeners.add(l)
+    }
+
+    fun removeValChangeListener(l: ()->Unit){  // для списка
+        valChangeListeners.remove(l)
     }
 }
