@@ -115,7 +115,7 @@ class CartesianPainter(val plane: CartesianScreenPlane) : Painter{ // Так к�
         if (g != null){
             g.color = when (size){
                 SizeType.Small -> Color.BLACK
-                SizeType.Medium -> Color.GREEN
+                SizeType.Medium -> Color.BLUE
                 SizeType.Large -> Color.BLUE
             }
             val (z1, z2) = xZeroPos
@@ -151,7 +151,7 @@ class CartesianPainter(val plane: CartesianScreenPlane) : Painter{ // Так к�
         if (g != null){
             g.color = when (size){
                 SizeType.Small -> Color.BLACK
-                SizeType.Medium -> Color.GREEN
+                SizeType.Medium -> Color.BLUE
                 SizeType.Large -> Color.BLUE
             }  // а дальше что хз
             val (z1, z2) = yZeroPos

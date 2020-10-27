@@ -6,5 +6,3 @@ import java.awt.Graphics
 interface Painter {
     fun paint(g: Graphics?)  // В GraphicsPanel вызываем этот метод. Включаем здесь метод в интерфейс.
 }
-
-// painter должен знать размера

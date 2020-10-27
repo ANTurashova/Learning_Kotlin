@@ -4,17 +4,22 @@ import kotlin.math.abs
 import kotlin.math.max
 
 open class Polynom(coef: DoubleArray) {
-
     /**
      * Коэффициенты полинома для использования внутри класса
      */
     protected var coef: DoubleArray = coef.clone()
 
+
     /**
      * Свойство для доступа к коэффициентам полинома извне
      */
-    val coefficients: DoubleArray
-        get() = coef.clone() //Возвращаем копию коэффициентов полинома
+    val coeffitients: DoubleArray
+        get() = coef.clone()
+
+    /**
+     * Ноль
+     */
+    private val ZERO = 0.0 //Изменить
 
     /**
      * Степень полинома
@@ -37,12 +42,14 @@ open class Polynom(coef: DoubleArray) {
     /**
      * Удаление нулевых коэффициентов при старших степенях
      */
-    private fun correctPower() {
+    private fun correctPower(){
+
         var b = true
         coef = coef.reversed().filterIndexed { i, v ->
             if (v.compareTo(0.0) != 0) b = false
             !b || (i == power)
         }.reversed().toDoubleArray()
+
     }
 
     /**
@@ -51,20 +58,11 @@ open class Polynom(coef: DoubleArray) {
      * @return полином, являющийся результатом суммирования данного полинома с другим
      */
     operator fun plus(other: Polynom) =
-            Polynom(DoubleArray(max(power, other.power) + 1)
-            {
-                (if (it < coef.size) coef[it] else 0.0) +
-                        (if (it < other.coef.size) other.coef[it] else 0.0)
+            Polynom( DoubleArray(max(power, other.power) + 1) {
+                (if (it<coef.size) coef[it] else 0.0) +
+                        (if (it<other.coef.size) other.coef[it] else 0.0)
             }
             )
-
-    operator fun plusAssign(other: Polynom) {
-        coef = DoubleArray(max(power, other.power) + 1)
-        {
-            (if (it < coef.size) coef[it] else 0.0) +
-                    (if (it < other.coef.size) other.coef[it] else 0.0)
-        }
-    }
 
     /**
      * Определение значения произведения полинома на число
@@ -72,7 +70,7 @@ open class Polynom(coef: DoubleArray) {
      * @return результат умножения данного (this) полинома на число
      */
     operator fun times(k: Double) =
-            Polynom(DoubleArray(power + 1) { coef[it] * k })
+            Polynom(DoubleArray(power+1){ coef[it] * k })
 
     /**
      * Определение разности двух полиномов
@@ -83,21 +81,13 @@ open class Polynom(coef: DoubleArray) {
             this + other * -1.0
 
     /**
-     * @param other полином, на который производится умножение
-     * @return произведение двух полиномов
+     *
      */
-    operator fun times(other: Polynom): Polynom{
-        //Создание массива коэффициентов нового полинома
-        val t = DoubleArray(power + other.power + 1){ 0.0 }
-        //Для каждого коэффициента первого полинома и
-        coef.forEachIndexed { ti, tc ->
-            //коэффициента второго полинома
-            other.coef.forEachIndexed{ oi, oc ->
-                t[ti + oi] += tc * oc
-            }
+    operator fun plusAssign(other: Polynom){
+        coef = DoubleArray(max(power, other.power) + 1) {
+            (if (it<coef.size) coef[it] else 0.0) +
+                    (if (it<other.coef.size) other.coef[it] else 0.0)
         }
-        // Создание нового полинома по рассчитанным коэффициентам
-        return Polynom(t)
     }
 
     /**
@@ -105,9 +95,9 @@ open class Polynom(coef: DoubleArray) {
      * @param k число, на которое требуется подилить полином
      * @return частное от деления полинома на число
      */
-    operator fun div(k: Double) : Polynom? =
-            if (k.compareTo(0.0)!=0)
-                this*(1.0/k)
+    operator fun div(k: Double): Polynom? =
+            if (k.compareTo(0.0) != 0)
+                this * (1.0 / k)
             else
                 null
 
@@ -157,10 +147,69 @@ open class Polynom(coef: DoubleArray) {
      * @param x точка, в которой нужно вычислить значение полинома
      * @return значение полинома в точке
      */
-    operator fun invoke(x: Double): Double{
+    operator fun invoke(x: Double): Double {
         var pow = 1.0
         return coef.reduce { acc, d ->
             pow *= x; acc + d * pow
         }
+    }
+
+    /**
+     * @param other полином, на который производится умножение
+     * @return произведение двух полиномов
+     */
+    operator fun times(other: Polynom): Polynom{
+        //Создание массива коэффициентов нового полинома
+        val t = DoubleArray(power + other.power + 1){ 0.0 }
+        //Для каждого коэффициента первого полинома и
+        coef.forEachIndexed { ti, tc ->
+            //коэффициента второго полинома
+            other.coef.forEachIndexed{ oi, oc ->
+                t[ti + oi] += tc * oc
+            }
+        }
+        // Создание нового полинома по рассчитанным коэффициентам
+        return Polynom(t)
+    }
+
+    /**
+     * Произведение полиномов
+     * @param other - другой полином
+     */
+    fun mul(other: Polynom): Polynom? {
+
+        val result = DoubleArray(power + other.power + 1){0.0}
+
+        coef.forEachIndexed { i, v ->
+            other.coef.forEachIndexed { oi, ov ->
+                result[i + oi] += v * ov
+            }
+        }
+        return Polynom(result)
+    }
+
+    /**
+     * Сравнение двух полиномов
+     * @param other - полином, с которым сравнивается данный
+     * @return 1, если this больше other
+     *        -1, если this меньше other
+     *         0, если полиномы равны
+     * */
+    fun compareTo(other: Polynom): Int {
+        when {
+            coef.size > other.coef.size -> {
+                return 1
+            }
+            coef.size < other.coef.size -> {
+                return -1
+            }
+            else -> {
+                for (i in coef.indices) {
+                    if (coef[i] > other.coef[i]) return 1
+                    if (coef[i] < other.coef[i]) return -1
+                }
+            }
+        }
+        return 0
     }
 }

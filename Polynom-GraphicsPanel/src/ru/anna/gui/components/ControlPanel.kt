@@ -21,9 +21,9 @@ class ControlPanel : JPanel(){
     val smYMin: SpinnerNumberModel  // скролл
     val smYMax: SpinnerNumberModel  // скролл
 
-    companion object{
-        private val MIN_SZ = GroupLayout.PREFERRED_SIZE
-        private val MAX_SZ = GroupLayout.DEFAULT_SIZE
+    companion object{  // В с# были такие же, но static
+        private val MIN_SZ = GroupLayout.PREFERRED_SIZE                                                                                                  // для примера: если это будет лейбол то займет все значение
+        private val MAX_SZ = GroupLayout.DEFAULT_SIZE                                                                                                    // не больше чем обозначеная размер.  //для все окошек панелей  , константы для всех обьектов
     }
 
     private val valChangeListeners = mutableListOf<()->Unit>()  // Создаём пустой список и добавим ему пару методов
@@ -71,7 +71,7 @@ class ControlPanel : JPanel(){
 
         val gl = GroupLayout(this)
         gl.setVerticalGroup(gl.createSequentialGroup()
-                .addGap(4)
+                .addGap(4)  // отступ
                 .addGroup(
                         gl.createParallelGroup()
                                 .addComponent(lXMin, MIN_SZ, MIN_SZ, MIN_SZ)
