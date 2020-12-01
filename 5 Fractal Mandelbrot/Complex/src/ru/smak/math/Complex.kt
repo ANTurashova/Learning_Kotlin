@@ -14,7 +14,7 @@ class Complex(var re: Double, var im: Double) {
     /**
      * Вторичный конструктор для создания нулевого комплекного числа
      */
-    constructor(): this(0.0, 0.0)
+    constructor(): this(0.0, 0.0)  // конструктор по умолчанию
 
     /**
      * Вторичный конструктор для создания комплексного числа с ненулевой действительной частью
@@ -189,7 +189,7 @@ class Complex(var re: Double, var im: Double) {
     /**
      * Строковое представление комплексного числа
      */
-    override fun toString(): String {
+    override fun toString(): String {  // У нас есть проблемка со сравниванием чисел, тк в котлине 3.99999999 не равно 4
         val s = StringBuilder()
         // Если вещественная часть не нулевая,
         // а также если мнимая - нулевая
@@ -222,6 +222,7 @@ class Complex(var re: Double, var im: Double) {
     }
 }
 
+// У нас есть проблемка со сравниванием чисел, тк в котлине 3.99999999 не равно 4. Так что исправляем:
 private infix fun Double.eq(other: Double) =
         abs(this - other) < max(Math.ulp(this), Math.ulp(other)) * 2
 private infix fun Double.neq(other: Double) =

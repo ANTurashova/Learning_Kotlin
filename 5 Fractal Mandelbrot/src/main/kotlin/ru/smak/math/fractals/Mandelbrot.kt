@@ -12,7 +12,7 @@ class Mandelbrot {
     /**
      * r^2 для проверки принадлежности точки множеству
      */
-    private var r2: Double = 4.0
+    private var r2: Double = 4.0  // создаём контранту для проверки большести z^2
 
     /**
      * Количество итераций, в течение которых проверяется
@@ -32,15 +32,16 @@ class Mandelbrot {
      */
     fun isInSet(c: Complex): Float {
         //var z = Complex()
-        val z = Complex()  // val z теперь константа
+        val z = Complex()  // создали z  // val z теперь константа
         for (i in 1..maxIters){
             z powAssign 2  // pow - возведение в степень, создали новый метод powAssign - возведение в степень с присвоением.
                            // Это для того, чтобы не создавались новые объекты
             z += c
             //z = (z pow 2) + c
             //if (z.abs() > 2.0) return false
-            if (z.abs2() > r2) return i.toFloat()/maxIters.toFloat()
+            if (z.abs2() > r2) return i.toFloat()/maxIters.toFloat()  // роверим, что z^2 больше чем r2, то точка множеству не принадлежит
         }
+        // return true
         return 1F
     }
 }

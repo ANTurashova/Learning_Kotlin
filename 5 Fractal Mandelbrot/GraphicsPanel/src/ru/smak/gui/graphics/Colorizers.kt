@@ -1,9 +1,10 @@
 package ru.smak.gui.graphics
+// разукрашивание внешнего понинома
 
 import java.awt.Color
 import kotlin.math.*
 
-fun colorScheme1(x: Float): Color {
+fun colorScheme1(x: Float): Color {  // принимает Float, возвращает Color
     val r = cos(2*sin(3*x))*cos(2*sin(3*x))
     val g = abs(cos(10*x))
     val b = 2F/3F*(1F - abs(cos(5*x)))
@@ -25,7 +26,7 @@ fun colorScheme3(x: Float): Color {
 }
 
 fun colorScheme4(x: Float): Color {
-    val r = 1F-abs(sin(17+6*sin(15*x))*sin(7+2*sin(28*x)))
+    val r = 1F-abs(sin(17+6*sin(15*x))*sin(7+2*sin(28*x)))  // 1F - единица float
     val b = log2(1F+abs(sin(2*sin(3*x))*cos(2*sin(3*x))))
     val g = 1F-abs(cos(12+6*sin(15*x))*cos(13+2*sin(28*x)))
     return Color(r, g, b)

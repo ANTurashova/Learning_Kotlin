@@ -2,8 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/5 Fractal Mandelbrot.iml" filepath="$PROJECT_DIR$/5 Fractal Mandelbrot.iml" />
       <module fileurl="file://$PROJECT_DIR$/Complex/Complex.iml" filepath="$PROJECT_DIR$/Complex/Complex.iml" />
-      <module fileurl="file://$PROJECT_DIR$/Fractal.iml" filepath="$PROJECT_DIR$/Fractal.iml" />
       <module fileurl="file://$PROJECT_DIR$/GraphicsPanel/GraphicsPanel.iml" filepath="$PROJECT_DIR$/GraphicsPanel/GraphicsPanel.iml" />
     </modules>
   </component>

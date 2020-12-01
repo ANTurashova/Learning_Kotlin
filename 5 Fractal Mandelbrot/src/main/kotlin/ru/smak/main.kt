@@ -7,3 +7,4 @@ fun main() {
 //    w.isVisible = true
     MainWindow().apply { isVisible = true }
 }
+
