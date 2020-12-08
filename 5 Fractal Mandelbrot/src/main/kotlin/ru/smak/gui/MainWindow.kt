@@ -88,7 +88,7 @@ class MainWindow : JFrame(){
                         mfp.currentPoint = it.point
                     }
                     mfp.isVisible = false
-                    mfp.selectionRect?.apply {  // selectionRect
+                    mfp.selectionRect?.apply {
                         val xMin = Converter.xScr2Crt(x, plane)
                         val xMax = Converter.xScr2Crt(x + width, plane)
                         val yMin = Converter.yScr2Crt(y + height, plane)
@@ -97,21 +97,17 @@ class MainWindow : JFrame(){
                         currentStep += 1
                         historySteps.put(currentStep, listOf(xMin, xMax, yMin, yMax))
 
-
                         for ((key, value) in historySteps) {
                             println(key)
                             println(value)
                         }
                         println("----------------")
 
-                        var xxx = historySteps.values.last()[2]
-                        println(xxx)
-
-                        plane.also{  // Новая отрисовка
-                            it.xMin = xMin
-                            it.xMax = xMax
-                            it.yMin = yMin
-                            it.yMax = yMax
+                        plane.also{
+                            it.xMin = historySteps.values.last()[0]
+                            it.xMax = historySteps.values.last()[1]
+                            it.yMin = historySteps.values.last()[2]
+                            it.yMax = historySteps.values.last()[3]
                         }
                     }
                     repaint()
