@@ -1,3 +1,6 @@
+import java.io.BufferedReader
+import java.io.FileInputStream
+import java.io.InputStreamReader
 import java.util.regex.Pattern
 
 class RegExTest(val wholeText: String) {
@@ -21,11 +24,30 @@ class RegExTest(val wholeText: String) {
 }
 
 fun main(){
-    val s = "Какой-то текст, в котором нужно что-то найти."
-    val result = RegExTest(s).find("[Нн]\\w*")  // слова начинающиеся на букву "н"
+    val s = loadText("3k.txt")
+    val result = RegExTest(s).find("""
+        (?<=\s)(?:(?:(?:[0-2]?\d|31)\.(?:0\d|1[0-2]))\.
+        (?:(?:[1-2]\d)?\d\d)|(?:(?:[0-2]?\d|1[0-2]))\
+        /(?:[0-2]?\d|31)\/(?:(?:[1-2]\d)?\d\d)) 
+        ((?:[0-1]?\d|2[0-3]):[0-5]\d(?:\:[0-5]\d)?)
+        (?=\s)
+    """.trimIndent())  // слова начинающиеся на букву "н"
     result.forEach{println(it)}
+}
+
+fun loadText(filename: String): String {
+    val f = BufferedReader(
+        InputStreamReader(
+            FileInputStream(
+                filename
+            )
+        )
+    )
+    val res = f.readLines().joinToString(separator = "\n")
+    f.close()
+    return res
 }
 
 
 // нужно выделлить время и даду и не выделить ничего другого
-// список дат и времён, который в этом тексте есть 
+// список дат и времён, который в этом тексте есть
