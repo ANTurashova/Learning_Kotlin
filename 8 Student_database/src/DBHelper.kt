@@ -12,27 +12,102 @@ class DBHelper(
     private val password: String = "root"
 ){
     private var connection: Connection? = null
+//    init {
+//        try {
+//            connection = DriverManager.getConnection(
+//                    "jdbc:mysql://$address:$port/$dbName?serverTimezone=UTC",
+//                    user,
+//                    password
+//            )
+//            // Демонстрация
+//            val s = connection?.createStatement()
+//            val sql_create = "create table `3test2` (\n" +
+//                    "    `id` int primary key auto_increment,\n" +
+//                    "    `text_field` varchar(50) not null,\n" +
+//                    "    `int_field` int default 0\n" +
+//                    ")"
+//            s?.execute(sql_create) // Исполняем запрос
+//        }catch (e: SQLException){
+//            println("Ошибка создания таблицы:\n${e.toString()} ")
+//        }
+//    }
+
     init {
-        try {
-            connection = DriverManager.getConnection(
-                    "jdbc:mysql://$address:$port/$dbName?serverTimezone=UTC",
-                    user,
-                    password
-            )
-            // Демонстрация
-            val s = connection?.createStatement()
-            val sql_create = "create table `3test2` (\n" +
-                    "    `id` int primary key auto_increment,\n" +
-                    "    `text_field` varchar(50) not null,\n" +
-                    "    `int_field` int default 0\n" +
-                    ")"
-            s?.execute(sql_create) // Исполняем запрос
-        }catch (e: SQLException){
-            println("Ошибка создания таблицы:\n${e.toString()} ")
-        }
+        connection = DriverManager.getConnection(
+                "jdbc:mysql://$address:$port/$dbName?serverTimezone=UTC", user, password
+        )
 
     }
 
+    fun dropAllTables(){
+        println("Удаление всех таблиц в базе данных...")
+        val s = connection?.createStatement()
+        s?.execute("DROP TABLE if exists `performance`")
+        s?.execute("DROP TABLE if exists `students`")
+        s?.execute("DROP TABLE if exists `groups`")
+        s?.execute("DROP TABLE if exists `disciplines_plans`")
+        s?.execute("DROP TABLE if exists `academic_plans`")
+        s?.execute("DROP TABLE if exists `disciplines`")
+        s?.execute("DROP TABLE if exists `cathedras`")
+        s?.execute("DROP TABLE if exists `specializations`")
+        println("Все таблицы удалены.")
+
+    }
+
+    /**Функция, создающая таблицы в базе данных на основе SQL-дампа
+     * @param path путь до SQL-дампа*/
+    fun createDataBaseFromDump(path: String){
+        println("Создание структуры базы данных из дампа...")
+        try {
+            val s = connection?.createStatement()
+            var query = ""
+            File(path).forEachLine {
+                if(!it.startsWith("--") && it.isNotEmpty()){
+                    query += it;
+                    if (it.endsWith(';')) {
+                        s?.addBatch(query)
+                        query = ""
+                    }
+                }
+            }
+            s?.executeBatch()
+            println("Структура базы данных успешно создана.")
+        }catch (e: SQLException){ println(e.message)
+        }catch (e: Exception){ println(e.message)}
+    }
+
+    /**Функция для заполнения таблицы из CSV - файла
+     * @param table название таблицы в базе данных
+     * @param path путь до источника данных (CSV - файла)
+     * TODO Добавить Exception для ощибок с чтением файла*/
+    fun fillTableFromCSV(table: String, path: String){
+
+        println("Заполнение таблицы $table из файла $path")
+        val s = connection?.createStatement()
+        try {
+            var requestTemplate = "INSERT INTO `${table}` "
+            val dataBufferedReader = File(path).bufferedReader()
+            val columns = dataBufferedReader.readLine()
+                    .split(',')
+                    .toString()
+            requestTemplate += "(${columns.substring(1, columns.length - 1)}) VALUES "
+
+            while (dataBufferedReader.ready()){
+                var request = "$requestTemplate("
+                val data = dataBufferedReader.readLine().split(',')
+                data.forEachIndexed{i, column ->
+                    request += "\"$column\""
+                    if (i < data.size - 1) request += ','
+                }
+                request += ')'
+                s?.addBatch(request)
+            }
+            s?.executeBatch()
+            s?.clearBatch()
+
+        }catch (e: SQLException){ println(e)}
+
+    }
 }
 
 
