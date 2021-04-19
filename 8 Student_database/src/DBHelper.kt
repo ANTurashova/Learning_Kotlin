@@ -42,14 +42,14 @@ class DBHelper(
     fun dropAllTables(){
         println("Удаление всех таблиц в базе данных...")
         val s = connection?.createStatement()
-        s?.execute("DROP TABLE if exists `performance`")
-        s?.execute("DROP TABLE if exists `students`")
-        s?.execute("DROP TABLE if exists `groups`")
-        s?.execute("DROP TABLE if exists `disciplines_plans`")
-        s?.execute("DROP TABLE if exists `academic_plans`")
-        s?.execute("DROP TABLE if exists `disciplines`")
-        s?.execute("DROP TABLE if exists `cathedras`")
-        s?.execute("DROP TABLE if exists `specializations`")
+        s?.execute("DROP TABLE if exists `academic_performance`")
+        s?.execute("DROP TABLE if exists `student`")
+        s?.execute("DROP TABLE if exists `group`")
+        s?.execute("DROP TABLE if exists `curriculum_discipline`")
+        s?.execute("DROP TABLE if exists `curriculum`")
+        s?.execute("DROP TABLE if exists `discipline`")
+        s?.execute("DROP TABLE if exists `department`")
+        s?.execute("DROP TABLE if exists `specialization`")
         println("Все таблицы удалены.")
 
     }

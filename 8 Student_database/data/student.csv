@@ -1,4 +1,4 @@
-id,last_name,first_name,mid_name,gender,birthday,group_id
+id_student,last_name,first_name,patronymic,gender,birthday,id_group
 1,Анисимова,Елизавета,Андреевна,Ж,2002.1.1,05-001
 2,Беляев,Матвей,Артёмович,М,2000.3.6,05-801
 3,Горбушин,Виталий,Валерьевич,М,2001.6.12,05-901

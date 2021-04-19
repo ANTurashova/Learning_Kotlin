@@ -1,12 +1,3 @@
--- phpMyAdmin SQL Dump
--- version 5.0.4
--- https://www.phpmyadmin.net/
---
--- Хост: 127.0.0.1:3306
--- Время создания: Мар 20 2021 г., 16:41
--- Версия сервера: 8.0.19
--- Версия PHP: 7.1.33
-
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
 SET time_zone = "+00:00";
@@ -17,286 +8,171 @@ SET time_zone = "+00:00";
 /*!40101 SET @OLD_COLLATION_CONNECTION = @@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8mb4 */;
 
---
--- База данных: `students`
---
 
--- --------------------------------------------------------
-
-
---
--- Структура таблицы `specializations`
---
-
-CREATE TABLE `specializations`
+CREATE TABLE `student`
 (
-    `id`   varchar(8)                                                   NOT NULL,
-    `name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
+    `id_student`         int                                                            NOT NULL,
+    `first_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci   NOT NULL,
+    `last_name`  varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci   NOT NULL,
+    `patronymic` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci   DEFAULT NULL,
+    `gender`     set ('М','Ж') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
+    `birthday`   date                                                           NOT NULL,
+    `id_group`   varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci   NOT NULL
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
---
--- Структура таблицы `academic_plans`
---
 
-CREATE TABLE `academic_plans`
+CREATE TABLE `group`
 (
-    `id`                int        NOT NULL,
+    `id_group`         varchar(10)                                NOT NULL,
+    `id_curriculum`    int                                        NOT NULL,
+    `qualification`    enum ('master','bachelor','specialist')    NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
+
+
+CREATE TABLE `curriculum`
+(
+    `id_curriculum`     int        NOT NULL,
     `year`              year       NOT NULL,
-    `specialization_id` varchar(8) NOT NULL
+    `id_specialization` varchar(10) NOT NULL
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
---
--- Дамп данных таблицы `academic_plans`
---
 
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `cathedras`
---
-
-CREATE TABLE `cathedras`
+CREATE TABLE curriculum_discipline
 (
-    `id`   int         NOT NULL,
-    `name` varchar(40) NOT NULL
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `disciplines`
---
-
-CREATE TABLE `disciplines`
-(
-    `id`          varchar(40) NOT NULL,
-    `name`        varchar(80) NOT NULL,
-    `cathedra_id` int         NOT NULL
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
--- --------------------------------------------------------
-
---
--- Структура таблицы `disciplines_plan`
---
-
-CREATE TABLE disciplines_plans
-(
-    `id`               int         NOT NULL,
-    `academic_plan_id` int         NOT NULL,
-    `discipline_id`    varchar(40) NOT NULL,
+    `id_c_d`           int         NOT NULL,
+    `id_curriculum`    int         NOT NULL,
+    `id_discipline`    varchar(40) NOT NULL,
     `semester_number`  int         NOT NULL,
-    `hours`            int         NOT NULL,
+    `number_of_hours`  int         NOT NULL,
     `reporting_form`   varchar(10) NOT NULL
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
 
---
--- Структура таблицы `groups`
---
-
-CREATE TABLE `groups`
+CREATE TABLE `specialization`
 (
-    `id`               varchar(6)                                 NOT NULL,
-    `academic_plan_id` int                                        NOT NULL,
-    `qualification`    enum ('master','bachelor','specialist') NOT NULL
-) ENGINE = InnoDB
-  DEFAULT CHARSET = utf8mb4
-  COLLATE = utf8mb4_0900_ai_ci;
-
---
--- Дамп данных таблицы `groups`
---
-
-
--- --------------------------------------------------------
-
-
---
--- Структура таблицы `students`
---
-
-CREATE TABLE `students`
-(
-    `id`         int                                                            NOT NULL,
-    `first_name` varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci   NOT NULL,
-    `last_name`  varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci   NOT NULL,
-    `mid_name`   varchar(40) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
-    `group_id`   varchar(6) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci    NOT NULL,
-    `gender`     set ('М','Ж') CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL,
-    `birthday`   date                                                           NOT NULL
+    `id_specialization`   varchar(10)                                                  NOT NULL,
+    `specialization_name` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4
   COLLATE = utf8mb4_0900_ai_ci;
 
 
---
--- Структура таблицы `performance`
---
-
-CREATE TABLE `performance`
+CREATE TABLE `academic_performance`
 (
-    `student_id`          INT NULL,
-    `disciplines_plan_id` INT NULL,
+    `id_student`          INT NULL,
+    `id_c_d`              INT NULL,
     `score`               INT NULL,
     `attempt`             INT NOT NULL DEFAULT '1'
 ) ENGINE = InnoDB;
 
 
+CREATE TABLE `discipline`
+(
+    `id_discipline`          varchar(40) NOT NULL,
+    `discipline_name`        varchar(80) NOT NULL,
+    `id_department`          int         NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
 
--- --------------------------------------------------------
 
-
---
--- Дамп данных таблицы `students`
---
-
-
---
--- Индексы сохранённых таблиц
---
-
---
--- Индексы таблицы `academic_plans`
---
-ALTER TABLE `academic_plans`
-    ADD PRIMARY KEY (`id`),
-    ADD KEY `specialization_id` (`specialization_id`);
-
---
--- Индексы таблицы `cathedras`
---
-ALTER TABLE `cathedras`
-    ADD PRIMARY KEY (`id`);
-
---
--- Индексы таблицы `disciplines`
---
-ALTER TABLE `disciplines`
-    ADD PRIMARY KEY (`id`),
-    ADD KEY `cathedra_id` (`cathedra_id`);
-
---
--- Индексы таблицы `performance`
---
-ALTER TABLE `performance`
-    ADD PRIMARY KEY (`student_id`, `disciplines_plan_id`),
-    ADD KEY (`disciplines_plan_id`),
-    ADD KEY (`student_id`);
+CREATE TABLE `department`
+(
+    `id_department`   int         NOT NULL,
+    `department_name` varchar(40) NOT NULL
+) ENGINE = InnoDB
+  DEFAULT CHARSET = utf8mb4
+  COLLATE = utf8mb4_0900_ai_ci;
 
 
 --
--- Индексы таблицы `disciplines_plan`
+-- Индексы
 --
-ALTER TABLE disciplines_plans
-    ADD PRIMARY KEY (`id`),
-    ADD KEY `academic_plan_id` (`academic_plan_id`),
-    ADD KEY `discipline_id` (`discipline_id`);
+ALTER TABLE `curriculum`
+    ADD PRIMARY KEY (`id_curriculum`),
+    ADD KEY `id_specialization` (`id_specialization`);
 
---
--- Индексы таблицы `groups`
---
-ALTER TABLE `groups`
-    ADD PRIMARY KEY (`id`),
-    ADD KEY `academic_plan_id` (`academic_plan_id`);
+ALTER TABLE `department`
+    ADD PRIMARY KEY (`id_department`);
 
---
--- Индексы таблицы `specializations`
---
-ALTER TABLE `specializations`
-    ADD PRIMARY KEY (`id`);
+ALTER TABLE `discipline`
+    ADD PRIMARY KEY (`id_discipline`),
+    ADD KEY `cathedra_id` (`id_department`);
 
---
--- Индексы таблицы `students`
---
-ALTER TABLE `students`
-    ADD PRIMARY KEY (`id`),
+ALTER TABLE `academic_performance`
+    ADD PRIMARY KEY (`id_student`, `id_c_d`),
+    ADD KEY (`id_c_d`),
+    ADD KEY (`id_student`);
+
+ALTER TABLE curriculum_discipline
+    ADD PRIMARY KEY (`id_c_d`),
+    ADD KEY `id_curriculum` (`id_curriculum`),
+    ADD KEY `id_discipline` (`id_discipline`);
+
+ALTER TABLE `group`
+    ADD PRIMARY KEY (`id_group`),
+    ADD KEY `id_curriculum` (`id_curriculum`);
+
+ALTER TABLE `specialization`
+    ADD PRIMARY KEY (`id_specialization`);
+
+ALTER TABLE `student`
+    ADD PRIMARY KEY (`id_student`),
     ADD KEY `name` (`last_name`, `first_name`),
-    ADD KEY `group_id` (`group_id`);
+    ADD KEY `group_id` (`id_group`);
 
---
--- AUTO_INCREMENT для сохранённых таблиц
---
-
---
--- AUTO_INCREMENT для таблицы `academic_plans`
---
-ALTER TABLE `academic_plans`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT,
+ALTER TABLE `curriculum`
+    MODIFY `id_curriculum` int NOT NULL AUTO_INCREMENT,
     AUTO_INCREMENT = 2;
 
---
--- AUTO_INCREMENT для таблицы `cathedras`
---
-ALTER TABLE `cathedras`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT;
-
 
 --
--- AUTO_INCREMENT для таблицы `disciplines_plan`
+-- AUTO_INCREMENT
 --
-ALTER TABLE disciplines_plans
-    MODIFY `id` int NOT NULL AUTO_INCREMENT;
+ALTER TABLE `department`
+    MODIFY `id_department` int NOT NULL AUTO_INCREMENT;
 
+ALTER TABLE curriculum_discipline
+    MODIFY `id_c_d` int NOT NULL AUTO_INCREMENT;
 
---
--- AUTO_INCREMENT для таблицы `students`
---
-ALTER TABLE `students`
-    MODIFY `id` int NOT NULL AUTO_INCREMENT,
+ALTER TABLE `student`
+    MODIFY `id_student` int NOT NULL AUTO_INCREMENT,
     AUTO_INCREMENT = 2;
 
---
--- Ограничения внешнего ключа сохраненных таблиц
---
 
 --
--- Ограничения внешнего ключа таблицы `academic_plans`
+-- Ограничения внешнего ключа
 --
-ALTER TABLE `academic_plans`
-    ADD CONSTRAINT `academic_plans_ibfk_1` FOREIGN KEY (`specialization_id`) REFERENCES `specializations` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `curriculum`
+    ADD CONSTRAINT `id_specialization_ibfk_1` FOREIGN KEY (`id_specialization`) REFERENCES `specialization` (`id_specialization`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
---
--- Ограничения внешнего ключа таблицы `disciplines`
---
-ALTER TABLE `disciplines`
-    ADD CONSTRAINT `disciplines_ibfk_1` FOREIGN KEY (`cathedra_id`) REFERENCES `cathedras` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `discipline`
+    ADD CONSTRAINT `id_department_ibfk_1` FOREIGN KEY (`id_department`) REFERENCES `department` (`id_department`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
---
--- Ограничения внешнего ключа таблицы `disciplines_plan`
---
-ALTER TABLE disciplines_plans
-    ADD CONSTRAINT `disciplines_plan_ibfk_1` FOREIGN KEY (`academic_plan_id`) REFERENCES `academic_plans` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-    ADD CONSTRAINT `disciplines_plan_ibfk_2` FOREIGN KEY (`discipline_id`) REFERENCES `disciplines` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE curriculum_discipline
+    ADD CONSTRAINT `id_curriculum_ibfk_1` FOREIGN KEY (`id_curriculum`) REFERENCES `curriculum` (`id_curriculum`) ON DELETE RESTRICT ON UPDATE CASCADE,
+    ADD CONSTRAINT `id_discipline_ibfk_2` FOREIGN KEY (`id_discipline`) REFERENCES `discipline` (`id_discipline`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
---
--- Ограничения внешнего ключа таблицы `groups`
---
-ALTER TABLE `groups`
-    ADD CONSTRAINT `groups_ibfk_1` FOREIGN KEY (`academic_plan_id`) REFERENCES `academic_plans` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `group`
+    ADD CONSTRAINT `group_ibfk_1` FOREIGN KEY (`id_curriculum`) REFERENCES `curriculum` (`id_curriculum`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
---
--- Ограничения внешнего ключа таблицы `students`
---
-ALTER TABLE `students`
-    ADD CONSTRAINT `students_ibfk_1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `student`
+    ADD CONSTRAINT `student_ibfk_1` FOREIGN KEY (`id_group`) REFERENCES `group` (`id_group`) ON DELETE RESTRICT ON UPDATE CASCADE;
 COMMIT;
 
-ALTER TABLE `performance`
-    ADD FOREIGN KEY (`disciplines_plan_id`) REFERENCES `disciplines_plans` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
-    ADD FOREIGN KEY (`student_id`) REFERENCES `students` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE;
+ALTER TABLE `academic_performance`
+    ADD FOREIGN KEY (`id_c_d`) REFERENCES `curriculum_discipline` (`id_c_d`) ON DELETE RESTRICT ON UPDATE CASCADE,
+    ADD FOREIGN KEY (`id_student`) REFERENCES `student` (`id_student`) ON DELETE RESTRICT ON UPDATE CASCADE;
+
+
 /*!40101 SET CHARACTER_SET_CLIENT = @OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS = @OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION = @OLD_COLLATION_CONNECTION */;

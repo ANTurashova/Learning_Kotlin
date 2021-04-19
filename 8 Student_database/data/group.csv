@@ -1,4 +1,4 @@
-id,academic_plan_id,qualification
+id_group,id_curriculum,qualification
 05-001,11,bachelor
 05-002,12,bachelor
 05-003,13,bachelor

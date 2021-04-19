@@ -5,13 +5,13 @@ fun main() {
     dbHelper.apply {
         dropAllTables()
         createDataBaseFromDump("students.sql")
-        fillTableFromCSV("cathedras", "data/cathedras.csv")
-        fillTableFromCSV("disciplines", "data/disciplines.csv")
-        fillTableFromCSV("specializations", "data/specializations.csv")
-        fillTableFromCSV("academic_plans", "data/academic_plans.csv")
-        fillTableFromCSV("groups", "data/groups.csv")
-        fillTableFromCSV("disciplines_plans", "data/disciplines_plans.csv")
-        fillTableFromCSV("students", "data/students.csv")
-        fillTableFromCSV("performance", "data/performance.csv")
+        fillTableFromCSV("department", "data/department.csv")
+        fillTableFromCSV("discipline", "data/discipline.csv")
+        fillTableFromCSV("specialization", "data/specialization.csv")
+        fillTableFromCSV("curriculum", "data/curriculum.csv")
+        fillTableFromCSV("group", "data/group.csv")
+        fillTableFromCSV("curriculum_discipline", "data/curriculum_discipline.csv")
+        fillTableFromCSV("student", "data/student.csv")
+        fillTableFromCSV("academic_performance", "data/academic_performance.csv")
     }
 }
