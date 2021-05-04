@@ -8,8 +8,13 @@ class Client(
     val port: Int
 ){
     private val socket: Socket
+    private var stop -
     init{
         socket = Socket(host, port)
+    }
+
+    fun stop(){
+        stop = true
     }
 
     fun start(){

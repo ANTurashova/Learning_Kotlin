@@ -67,7 +67,7 @@ CREATE TABLE `specialization`
 
 CREATE TABLE `academic_performance`
 (
-    `id_student`          INT NULL,
+    `id_student_a_p`          INT NULL,
     `id_c_d`              INT NULL,
     `score`               INT NULL,
     `attempt`             INT NOT NULL DEFAULT '1'
@@ -108,9 +108,9 @@ ALTER TABLE `discipline`
     ADD KEY `cathedra_id` (`id_department`);
 
 ALTER TABLE `academic_performance`
-    ADD PRIMARY KEY (`id_student`, `id_c_d`),
+    ADD PRIMARY KEY (`id_student_a_p`, `id_c_d`),
     ADD KEY (`id_c_d`),
-    ADD KEY (`id_student`);
+    ADD KEY (`id_student_a_p`);
 
 ALTER TABLE curriculum_discipline
     ADD PRIMARY KEY (`id_c_d`),
@@ -170,7 +170,7 @@ COMMIT;
 
 ALTER TABLE `academic_performance`
     ADD FOREIGN KEY (`id_c_d`) REFERENCES `curriculum_discipline` (`id_c_d`) ON DELETE RESTRICT ON UPDATE CASCADE,
-    ADD FOREIGN KEY (`id_student`) REFERENCES `student` (`id_student`) ON DELETE RESTRICT ON UPDATE CASCADE;
+    ADD FOREIGN KEY (`id_student_a_p`) REFERENCES `student` (`id_student`) ON DELETE RESTRICT ON UPDATE CASCADE;
 
 
 /*!40101 SET CHARACTER_SET_CLIENT = @OLD_CHARACTER_SET_CLIENT */;
