@@ -117,7 +117,7 @@ class DBHelper(
         println("Стипендии за последнюю сессию")
         val s = connection?.createStatement()
         val rs = s?.executeQuery(
-                "SELECT id_student, last_name, first_name, patronymic, id_group, scholarship FROM student JOIN \n" +
+                "SELECT id_student, last_name, first_name, patronymic, id_group, scholarship FROM student LEFT JOIN \n" +
                         "(SELECT id_student_a_p, \n" +
                         "    (CASE WHEN MIN(result) = 5 THEN 3100 \n" +
                         "        WHEN MIN(result) = 4 THEN 2100\n" +
