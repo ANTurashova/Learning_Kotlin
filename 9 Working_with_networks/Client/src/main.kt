@@ -11,9 +11,3 @@ fun main() {
     } while (data != "STOP")
     client.stop()
 }
-
-//fun main(){
-//    val client = Client("localhost", 5804)
-//    client.start()
-//}
-
