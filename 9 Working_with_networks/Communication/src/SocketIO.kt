@@ -6,47 +6,79 @@ import java.lang.Exception
 import java.net.Socket
 import kotlin.concurrent.thread
 
+/**
+ * Класс посредник - передатчик информации между подключенными
+ */
 class SocketIO(val socket: Socket) {
-
     private var stop = false
-    private var thread: Thread? = null
-    private val socketClosedListener = mutableListOf<()->Unit>()
 
-    fun addSocketClosedListener(l: ()->Unit){
+    //Событие, которое возникает при закрытии подключения
+    private val socketClosedListener = mutableListOf<()->Unit>()
+    fun addSocketClosedListener(l:()->Unit){
         socketClosedListener.add(l)
     }
-
-    fun removeSocketClosedListener(l: ()->Unit){
+    fun removeSocketClosedListener(l:()->Unit){
         socketClosedListener.remove(l)
     }
 
+//    private var thread: Thread? = null
+
+    //Событие которое возникает при получении информации от сокета
+    private val DataListener = mutableListOf<(String)->Unit>()  /***/
+    fun addDataListener(l:(String)->Unit){  /***/
+        DataListener.add(l)  /***/
+    }  /***/
+    fun removeDataListener(l:(String)->Unit){  /***/
+        DataListener.remove(l)  /***/
+    }  /***/
+
+
+    /**
+     * Принудительный разрыв соедения
+     * Закрытие сокетов
+     */
     fun stop(){
         stop = true
         socket.close()
     }
 
+    /**
+     * Функция обработки полученной информации
+     */
     fun startDataReceiving() {
         stop = false
-        stopAll = false
-        thread = thread{
+//        stopAll = false
+        thread{
             try {
                 val br = BufferedReader(InputStreamReader(socket.getInputStream()))
-                while (!stop && !stopAll) {
+                while (!stop) {  /***/
+//                while (!stop && !stopAll) {
                     val data = br.readLine()
                     if (data!=null)
-                        println(data)
+                        DataListener.forEach { it(data) }  /***/
+//                        println(data)
                     else {
                         throw IOException("Связь прервалась")
                     }
                 }
+
             } catch (ex: Exception){
-                socket.close()
-                socketClosedListener.forEach{it()}
+//                socket.close()
+//                socketClosedListener.forEach{it()}
                 println(ex.message)
             }
+            finally{  /***/
+                socket.close()  /***/
+                socketClosedListener.forEach { it() }  /***/
+            }  /***/
         }
     }
 
+
+    /**
+     * Отправка данных подключению
+     * @param data - сообщение/строка
+     */
     fun sendData(data: String): Boolean{
         try {
             val pw = PrintWriter(socket.getOutputStream())
@@ -57,11 +89,10 @@ class SocketIO(val socket: Socket) {
             return false
         }
     }
-
-    companion object{
-        private var stopAll = false
-        fun stopAll(){
-            stopAll = true
-        }
-    }
+//    companion object{
+//        private var stopAll = false
+//        fun stopAll(){
+//            stopAll = true
+//        }
+//    }
 }
